@@ -5,10 +5,10 @@ import { Outlet } from "react-router-dom";
 const RootLayout = () => {
   return (
     <ReactQueryProvide>
-      <Navbar />
-      <main>
-        <Outlet />
-      </main>
+        <Navbar />
+        <main>
+          <Outlet />
+        </main>
     </ReactQueryProvide>
   );
 };
