@@ -1,27 +1,19 @@
 import { Eye, EyeClosed } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
+import type { InputBoxProps } from "../types/data";
 
-interface InputBoxProps {
-  name: string;
-  type: string;
-  id?: string;
-  value?: string;
-  placeholder: string;
-  icon?: ReactNode;
-}
 const InputBox = ({
-  name,
   type,
   id,
   value,
   placeholder,
   icon,
+  ...props
 }: InputBoxProps) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   return (
     <div className="relative w-full mb-4">
       <input
-        name={name}
         type={
           type === "password"
             ? passwordVisibility
@@ -33,6 +25,7 @@ const InputBox = ({
         defaultValue={value}
         placeholder={placeholder}
         className="w-full rounded-md p-2 bg-gray-100 pl-14 border border-gray-300 focus:bg-transparent placeholder:text-gray-500"
+        {...props}
       />
       <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
         {icon}
