@@ -1,16 +1,17 @@
 import type React from "react";
 
 export interface IPostProps {
-  post: {
-    id: number;
-    title: string;
-    body: string;
-    views: number;
-    reactions: {
-      likes: number;
-      dislikes: number;
-    };
-  };
+post:{
+  _id: string,
+  title: string,
+  firstLine: string,
+  image: string,
+  createdAt: string,
+  author: {
+    name: string
+  }
+}
+
 }
 
 export interface InfiniteScrollContainerProps {
@@ -30,3 +31,30 @@ export interface InputBoxProps {
   placeholder?: string,
   icon?: React.ReactNode
 }
+export type Blog = {
+  blog: {
+  _id: string;
+  title: string;
+  content: string;
+  firstLine: string;
+  image: string;
+  category: string;
+  readingTime: string;
+  tags: string[];
+  reactions: {
+    like: number;
+    love: number;
+    fire: number;
+    wow: number;
+  };
+  seo: {
+    title: string;
+    description: string;
+    keywords: string[];
+  };
+  author: {
+    name: string;
+  };
+  createdAt: string;
+}
+};

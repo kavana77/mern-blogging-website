@@ -4,47 +4,17 @@ import Text from "../components/ui/text";
 import GoogleIcon from "../assets/icons/google.png";
 import { Link } from "react-router-dom";
 import type { UserAuthFormProps } from "../types/data";
-import { useForm, type FieldValues } from "react-hook-form";
-import { signUpSchema, signInSchema, type SignUpType, type SignInType } from "../lib/zodSchema";
-import { signUpUser, signInUser } from "../utils/http";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import useUserAuthForm from "../hooks/useUserAuthForm";
 
 const UserAuthForm = ({ type }: UserAuthFormProps) => {
-  const isSignIn = type === "sign-in";
-
+  const { form, onSubmit, isSignIn } = useUserAuthForm(
+    type as "sign-in" | "sign-up"
+  );
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
-  } = useForm<SignUpType | SignInType>({
-    resolver: zodResolver(isSignIn ? signInSchema : signUpSchema),
-  });
-
-  const onSubmit = async (data: FieldValues) => {
-    try {
-      if(isSignIn){
-        const signInData = await signInUser(data as SignInType)
-        console.log("Sign In Successful:", signInData)
-      }else{
-        const signUpData = await signUpUser(data as SignUpType)
-        console.log("Sign Up Successful:", signUpData)
-      }
-      reset()
-    } catch (error) {
-      console.error("Auth error: ", error)
-      alert((error as Error).message)
-    }
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // console.log("Form submitted:", data);
-    // reset();
-  };
-  useEffect(()=>{
-    reset()
-  },[type, reset])
-
-
+  } = form;
   return (
     <section className="min-h-[calc(100vh-80px)] flex items-center justify-center">
       <form className="w-[80%] max-w-[400px]" onSubmit={handleSubmit(onSubmit)}>
@@ -77,7 +47,9 @@ const UserAuthForm = ({ type }: UserAuthFormProps) => {
           placeholder="Password"
           icon={<Key className="w-5" />}
         />
-        {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+        {errors.password && (
+          <p className="text-red-500">{errors.password.message}</p>
+        )}
 
         <div className="flex justify-center mt-12">
           <button

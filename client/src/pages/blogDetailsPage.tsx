@@ -1,35 +1,54 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Text from "../components/ui/text";
-
-const fetchBlogById = async (id: string) => {
-  const res = await fetch(`https://dummyjson.com/posts/${id}`);
-  if (!res.ok) throw new Error("Failed to load blog");
-  return res.json();
-};
+import { fetchBlogById } from "../utils/http";
+import type { Blog } from "../types/data";
 
 const BlogDetail = () => {
   const { id } = useParams();
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useQuery<Blog>({
     queryKey: ["blog", id],
     queryFn: () => fetchBlogById(id!),
     enabled: !!id,
   });
 
   if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Something went wrong...</p>;
+  if (error || !data?.blog) return <p>Something went wrong...</p>;
+
+  const blog = data.blog;
 
   return (
-    <div className="max-w-3xl mx-auto p-18 text-center">
-      <Text className="text-2xl font-bold px-12">{data.title}</Text>
-      <Text className="text-gray-600 mt-2 p-2">{data.body}</Text>
-      <div className="mt-4 text-sm text-gray-500">
-        👀 {data.views} | 👍 {data.reactions.likes} | 👎{" "}
-        {data.reactions.dislikes}
+    <div className="max-w-3xl mx-auto p-8 text-left space-y-4">
+      <img
+        src={blog.image}
+        alt={blog.title}
+        className="w-full h-auto rounded-lg"
+      />
+      <Text className="text-3xl font-bold">{blog.title}</Text>
+      <p className="text-gray-500 text-sm">
+        ✍️ {blog.author.name} • 🕒 {blog.readingTime} • 🗓️{" "}
+        {new Date(blog.createdAt).toLocaleDateString()}
+      </p>
+      <Text className="text-gray-700 leading-7">{blog.content}</Text>
+
+      <div className="text-sm text-gray-600 mt-4">
+        ❤️ {blog.reactions.like} | 🔥 {blog.reactions.fire} | 😍{" "}
+        {blog.reactions.love} | 😲 {blog.reactions.wow}
       </div>
-      <div className="mt-2 text-xs text-gray-400">
-        Tags: {data.tags.join(", ")}
+
+      <div className="text-xs text-gray-400 mt-2">
+        📂 Category: {blog.category}
+      </div>
+      <div className="text-xs text-gray-400">
+        🏷️ Tags: {blog.tags.join(", ")}
+      </div>
+
+      <div className="mt-6 p-4 border rounded bg-gray-50">
+        <h3 className="font-semibold">SEO Metadata</h3>
+        <p className="text-sm">Title: {blog.seo.title}</p>
+        <p className="text-sm">Description: {blog.seo.description}</p>
+        <p className="text-sm">Keywords: {blog.seo.keywords.join(", ")}</p>
       </div>
     </div>
   );

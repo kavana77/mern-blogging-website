@@ -1,9 +1,12 @@
 import { RouterProvider } from "react-router-dom";
+import ReactQueryProvide from "./providers/reactQueryProvider";
 import router from "./routes";
 
 const App = () => {
   return ( 
-    <RouterProvider router={router}/>
+    <ReactQueryProvide>
+      <RouterProvider router={router}/>
+    </ReactQueryProvide>
    );
 }
  

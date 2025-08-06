@@ -13,7 +13,7 @@ const BlogListPage = () => {
     hasNextPage,
     isFetching,
     isFetchingNextPage,
-  } = usePosts(10);
+  } = usePosts(5);
   const posts = data?.pages.flatMap((page) => page.posts);
 
   if (isPending) {
@@ -27,7 +27,7 @@ const BlogListPage = () => {
           className="space-y-3"
         >
           {posts.map((post) => (
-            <Post key={post.id} post={post} />
+            <Post key={post._id} post={post} />
           ))}
           {isFetchingNextPage && (
             <div className="flex justify-centermy-4">
