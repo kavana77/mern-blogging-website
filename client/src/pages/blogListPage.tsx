@@ -37,7 +37,7 @@ const BlogListPage = () => {
         </InfiniteScrollContainer>
       )}
       {!isError && !posts?.length && (
-        <div className="text-center">No comments yet..</div>
+        <div className="text-center">No posts yet..</div>
       )}
       {isError && <div> Error loading posts: {error.message}</div>}
     </section>

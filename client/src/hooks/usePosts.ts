@@ -13,6 +13,4 @@ const usePosts = (limit: number) => {
     },
   });
 };
-
-
 export default usePosts;
