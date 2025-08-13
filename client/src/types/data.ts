@@ -58,3 +58,12 @@ export type Blog = {
   createdAt: string;
 }
 };
+
+export type BlogEditorData = {
+  title: string;
+  content: string[];
+  image: FileList;
+  tags: string[];
+  category: string;
+  readingTime: string;
+}

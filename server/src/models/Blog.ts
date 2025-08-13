@@ -18,25 +18,12 @@ const blogSchema = new mongoose.Schema({
     },
   },
   readingTime: { type: String }, 
-  seo: {
-    title: String,
-    description: String,
-    keywords: [String],
-  },
   reactions: {
     like: { type: Number, default: 0 },
     love: { type: Number, default: 0 },
     fire: { type: Number, default: 0 },
     wow: { type: Number, default: 0 },
   },
-  sections: [
-    {
-      heading: String,
-      body: String,
-      image: String,
-      codeSnippet: String,
-    },
-  ],
   comments: [
     {
       name: String,
@@ -44,7 +31,6 @@ const blogSchema = new mongoose.Schema({
       date: { type: Date, default: Date.now },
     },
   ],
-  relatedBlogs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Blog" }],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date },
 });
