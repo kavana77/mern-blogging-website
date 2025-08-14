@@ -2,18 +2,19 @@ import { Button } from "./ui/button";
 import DeffaultBanner from "../assets/images/blogbanner.png"
 import useBlogForm from "../hooks/useBlogForm";
 import { Editor } from 'primereact/editor';
+import { useState } from "react";
         
 
 interface BlogEditorProps {
     onNext: () => void
 }
 const BlogEditor = ({onNext}: BlogEditorProps) => {
-
+    const [banner, setBanner] = useState<File | null>(null)
    const {register, handleSubmit, onSubmit,errors} = useBlogForm()
    
     const handleBannerUpload = (e: React.ChangeEvent<HTMLInputElement>)=>{
-        const file = e.target.files?.[0]
-        console.log("File uploaded:", file)
+        const file = e.target.files?.[0] || null
+        setBanner(file)
     }
     const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>)=>{
         if(e.keyCode === 13 ){
@@ -37,7 +38,9 @@ const BlogEditor = ({onNext}: BlogEditorProps) => {
             <form  className="mx-auto max-w-[900px] w-full p-12 my-8" onSubmit={handleSubmit(onSubmit)}>
                 <div className="relative aspect-video bg-white border-4 border-gray-200">
                     <label htmlFor="uploadBanner">
-                        <img src={DeffaultBanner} className="z-20"/>
+                        <img 
+                        
+                        src={banner ? URL.createObjectURL(banner) :DeffaultBanner} className="z-20"/>
                         <input id="uploadBanner"
                         type="file"
                         accept=".png, .jpg, .jpeg"

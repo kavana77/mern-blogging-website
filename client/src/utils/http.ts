@@ -67,3 +67,20 @@ export const fetchBlogById = async (id: string) => {
     }
     return response.json()
 }
+
+export const uploadImage = async (image: File) => {
+  const formData = new FormData();
+  formData.append("image", image);
+
+  const response = await fetch("/upload", {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Failed to upload image");
+  }
+
+  return response.json();
+};
