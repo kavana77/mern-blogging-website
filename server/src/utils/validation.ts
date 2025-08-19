@@ -7,5 +7,6 @@ export default cleanEnv(process.env, {
   MONGO_URI: str(),
   CLOUDINARY_CLOUD_NAME: str(),
   CLOUDINARY_API_KEY: str(),
-  CLOUDINARY_API_SECRET: str()
+  CLOUDINARY_API_SECRET: str(),
+  CLOUDINARY_UPLOAD_FOLDER: str()
 });

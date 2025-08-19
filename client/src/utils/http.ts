@@ -68,9 +68,9 @@ export const fetchBlogById = async (id: string) => {
     return response.json()
 }
 
-export const uploadImage = async (image: File) => {
+export const uploadImage = async (file: File) => {
   const formData = new FormData();
-  formData.append("image", image);
+  formData.append("file", file);
 
   const response = await fetch("/upload", {
     method: "POST",

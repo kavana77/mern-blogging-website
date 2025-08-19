@@ -40,3 +40,4 @@ export const getBlogById: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+

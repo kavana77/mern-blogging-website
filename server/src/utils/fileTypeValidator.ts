@@ -1,0 +1,9 @@
+// utils/fileTypeValidator.ts
+import path from "path";
+
+export const fileTypeValidator = (file: Express.Multer.File): boolean => {
+  const fileTypes = /jpeg|jpg|png|gif/;
+  const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+  const mimeType = fileTypes.test(file.mimetype);
+  return extname && mimeType;
+};

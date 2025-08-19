@@ -5,12 +5,12 @@ interface PublishFormProps {
 }
 const PublishForm = ({onBack}: PublishFormProps) => {
     return ( 
-        <div>
-            <div>
-                <IoMdArrowBack onClick={onBack}/>
-            </div>
+        <section>
+            <button onClick={onBack} className="w-12 h-12 absolute left-[5vw] z-10 top-[5%] lg:top-[10%]">
+                <IoMdArrowBack />
+            </button>
             Publish form
-        </div>
+        </section>
      );
 }
  
