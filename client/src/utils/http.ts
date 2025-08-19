@@ -68,19 +68,21 @@ export const fetchBlogById = async (id: string) => {
     return response.json()
 }
 
-export const uploadImage = async (file: File) => {
-  const formData = new FormData();
-  formData.append("file", file);
 
-  const response = await fetch("/upload", {
+export const createPost = async (formData: FormData) => {
+  const response = await fetch("/api/upload", {
     method: "POST",
     body: formData,
   });
 
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || "Failed to upload image");
+    const errorText = await response.text();
+    throw new Error(errorText || "Failed to create post");
   }
 
   return response.json();
 };
+
+
+
+

@@ -1,16 +1,14 @@
-import { useState } from "react";
-import BlogEditor from "../components/BlogEditor";
-import PublishForm from "../components/PublishForm";
+
+
+import BlogForm from "../components/BlogForm";
+
+
 
 const Editor = () => {
-    const [editorState, setEditorState] = useState<"editor" | "publish">('editor')
     return ( 
         <>
-               { editorState === 'editor' ?( <BlogEditor onNext={() => setEditorState("publish")}/>) 
-               : (<PublishForm onBack={() => setEditorState("editor")}/>)}
-
+        <BlogForm/>
         </>
-      
      );
 }
  

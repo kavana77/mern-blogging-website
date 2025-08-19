@@ -1,19 +1,34 @@
 import { useForm } from "react-hook-form";
-import { blogSchema, type BlogType  } from "../lib/zodSchema";
+import { blogSchema, type BlogType } from "../lib/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { createPost } from "../utils/http";
+
 const useBlogForm = () => {
-    const blogForm = useForm<BlogType>({resolver:zodResolver( blogSchema)})
-    const { reset, handleSubmit, register, formState: { errors, isSubmitting}} = blogForm;
-    const onSubmit = async (data: BlogType)=>{
-        try {
-            console.log("Blog Data: ", data)
-            reset()
-        } catch (error) {
-            console.error("Error submitting blog form: ", error)
-            alert((error as Error).message)
-        }
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<BlogType>({
+    resolver: zodResolver(blogSchema),
+  });
+
+  const onSubmit = async (data: BlogType) => {
+    try {
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("firstLine", data.firstLine);
+      formData.append("content", data.content);
+      formData.append("file", data.image);
+      formData.append("tags", JSON.stringify(data.tags));
+      formData.append("category", data.category);
+      formData.append("readingTime", data.readingTime.toString());
+
+      const response = await createPost(formData);
+      console.log(" Blog created:", response);
+      reset();
+    } catch (error) {
+      console.error(" Error submitting blog form:", error);
+      alert((error as Error).message);
     }
-    return { handleSubmit, register, errors, isSubmitting, onSubmit}
-}
- 
+  };
+
+  return { register, handleSubmit, errors, isSubmitting, onSubmit };
+};
+
 export default useBlogForm;
