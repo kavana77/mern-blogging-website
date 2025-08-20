@@ -4,7 +4,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createPost } from "../utils/http";
 
 const useBlogForm = () => {
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<BlogType>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+    setValue,
+    watch,
+    getValues,
+  } = useForm<BlogType>({
     resolver: zodResolver(blogSchema),
   });
 
@@ -15,7 +23,7 @@ const useBlogForm = () => {
       formData.append("firstLine", data.firstLine);
       formData.append("content", data.content);
       formData.append("file", data.image);
-      formData.append("tags", JSON.stringify(data.tags));
+      formData.append("tags", data.tags.join(" , "));
       formData.append("category", data.category);
       formData.append("readingTime", data.readingTime.toString());
 
@@ -28,7 +36,16 @@ const useBlogForm = () => {
     }
   };
 
-  return { register, handleSubmit, errors, isSubmitting, onSubmit };
+  return {
+    register,
+    handleSubmit,
+    errors,
+    isSubmitting,
+    onSubmit,
+    setValue,
+    watch,
+    getValues,
+  };
 };
 
 export default useBlogForm;

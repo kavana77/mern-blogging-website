@@ -26,10 +26,10 @@ const BlogDetail = () => {
         className="w-full h-auto rounded-lg"
       />
       <Text className="text-3xl font-bold">{blog.title}</Text>
-      <p className="text-gray-500 text-sm">
+      {/* <p className="text-gray-500 text-sm">
         ✍️ {blog.author.name} • 🕒 {blog.readingTime} • 🗓️{" "}
         {new Date(blog.createdAt).toLocaleDateString()}
-      </p>
+      </p> */}
       <Text className="text-gray-700 leading-7">{blog.content}</Text>
 
       <div className="text-sm text-gray-600 mt-4">
@@ -43,13 +43,7 @@ const BlogDetail = () => {
       <div className="text-xs text-gray-400">
         🏷️ Tags: {blog.tags.join(", ")}
       </div>
-
-      <div className="mt-6 p-4 border rounded bg-gray-50">
-        <h3 className="font-semibold">SEO Metadata</h3>
-        <p className="text-sm">Title: {blog.seo.title}</p>
-        <p className="text-sm">Description: {blog.seo.description}</p>
-        <p className="text-sm">Keywords: {blog.seo.keywords.join(", ")}</p>
-      </div>
+      <div>Reading Time: {blog.readingTime} min 📖</div>
     </div>
   );
 };

@@ -7,8 +7,8 @@ post:{
   firstLine: string,
   image: string,
   createdAt: string,
-  author: {
-    name: string
+  author?: {
+    name?: string
   }
 }
 
@@ -47,23 +47,11 @@ export type Blog = {
     fire: number;
     wow: number;
   };
-  seo: {
-    title: string;
-    description: string;
-    keywords: string[];
-  };
-  author: {
-    name: string;
-  };
+  // author: {
+  //   name: string;
+  // };
   createdAt: string;
 }
 };
 
-export type BlogEditorData = {
-  title: string;
-  content: string[];
-  image: FileList;
-  tags: string[];
-  category: string;
-  readingTime: string;
-}
+

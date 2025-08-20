@@ -1,15 +1,6 @@
 import Blog from "../models/Blog";
 import { RequestHandler } from "express";
 
-export const createBlog: RequestHandler = async (req , res, next) => {
-    const data = req.body;
-    try {
-        const newBlog = await Blog.create(data)
-        res.status(201).json({ message: "Blog created successfully", newBlog})
-    } catch (error) {
-        next(error)
-    }
-}
 
 export const getBlogs: RequestHandler = async (req, res, next) => {
   try {

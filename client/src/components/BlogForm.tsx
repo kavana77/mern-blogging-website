@@ -4,79 +4,85 @@ import useBlogForm from "../hooks/useBlogForm";
 import { Editor } from "primereact/editor";
 import { useEffect, useState } from "react";
 import { blogSchema } from "../lib/zodSchema";
-import type { FieldValues } from "react-hook-form";
 
 const BlogForm = () => {
   const categories = blogSchema.shape.category.options;
 
-  const { register, handleSubmit, onSubmit, errors } = useBlogForm();
-  const [banner, setBanner] = useState<File | null>(null);
-  const [tags, setTags] = useState<string[]>([]);
-  const [newTag, setNewTag] = useState("");
-  const [content, setContent] = useState<string>("");
+  const {
+    register,
+    handleSubmit,
+    onSubmit,
+    errors,
+    setValue,
+    watch,
+    getValues,
+  } = useBlogForm();
   const [showPreview, setShowPreview] = useState(false);
-  const [readingTime, setReadingTime] = useState(0);
+  const [newTag, setNewTag] = useState("");
+
+  const content = watch("content", "");
+  const tags = watch("tags", []);
+
+  const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
+  const readingTime = Math.ceil(wordCount / 100);
 
   useEffect(() => {
-    const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
-    const minutes = Math.ceil(wordCount / 100);
-    setReadingTime(minutes || 0);
-  }, [content]);
+    setValue("readingTime", readingTime);
+  }, [readingTime, setValue]);
 
-  const handleBannerUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setBanner(file);
-  };
-
-  const handleAddTag = () => {
-    if (newTag.trim() && !tags.includes(newTag.trim())) {
-      setTags([...tags, newTag.trim()]);
-      setNewTag("");
+  const handleAddTag = (tag: string) => {
+    const trimmed = tag.trim();
+    const currentTags: string[] = getValues("tags") || [];
+    if (trimmed && !currentTags.includes(trimmed)) {
+      setValue("tags", [...currentTags, trimmed], { shouldValidate: true });
     }
+    setNewTag("");
   };
+
   const handleRemoveTag = (tag: string) => {
-    setTags(tags.filter((t) => t !== tag));
-  };
-
-  const handleFormSubmit = (data: FieldValues) => {
-
-    if (!banner) {
-      alert("Please upload a banner image!");
-      return;
-    }
-
-    onSubmit({
-      title: data.title,
-      firstLine: data.firstLine,
-      content: content,
-      image: banner, 
-      tags: tags,
-      category: data.category,
-      readingTime: readingTime,
-    });
+    const currentTags: string[] = getValues("tags") || [];
+    setValue(
+      "tags",
+      currentTags.filter((t) => t !== tag),
+      { shouldValidate: true }
+    );
   };
 
   return (
     <>
       <nav className="sticky top-0 flex justify-between items-center w-full px-12 py-5 h-[80px] border-b border-grey bg-white">
-        <img src="/public/blog-logo.png" className="object-cover w-28 md:w-34" />
+        <img
+          src="/public/blog-logo.png"
+          className="object-cover w-28 md:w-34"
+        />
       </nav>
 
       <section className="mx-auto max-w-[900px] w-full p-12 my-8">
-        <form onSubmit={handleSubmit(handleFormSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="aspect-video bg-white border-4 border-gray-200 mb-6">
             <label htmlFor="uploadBanner" className="cursor-pointer">
               <img
-                src={banner ? URL.createObjectURL(banner) : DefaultBanner}
+                src={
+                  watch("image") && watch("image") instanceof File
+                    ? URL.createObjectURL(watch("image") as File)
+                    : DefaultBanner
+                }
                 className="w-full h-full object-cover"
               />
               <input
+                {...register("image", { required: "Image is required" })}
                 id="uploadBanner"
                 type="file"
                 accept=".png,.jpg,.jpeg"
                 hidden
-                onChange={handleBannerUpload}
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) setValue("image", file, { shouldValidate: true });
+                }}
               />
+              {errors.image && (
+                <p className="text-red-500">{errors.image.message}</p>
+              )}
             </label>
           </div>
 
@@ -85,47 +91,69 @@ const BlogForm = () => {
             placeholder="Blog Title"
             className="text-3xl font-medium w-full h-20 outline-none resize-none mt-4 leading-tight border-b-2 border-gray-300"
           />
-          {errors.title && <p className="text-red-500">{errors.title.message}</p>}
+          {errors.title && (
+            <p className="text-red-500">{errors.title.message}</p>
+          )}
 
           <textarea
             {...register("firstLine", { required: "First line is required" })}
             placeholder="eg: This is my blog content...."
             className="text-2xl font-medium w-full h-20 outline-none resize-none mt-4 leading-tight border-b-2 border-gray-300"
           />
-          {errors.firstLine && <p className="text-red-500">{errors.firstLine.message}</p>}
+          {errors.firstLine && (
+            <p className="text-red-500">{errors.firstLine.message}</p>
+          )}
 
           <div className="my-9">
             <Editor
+              {...register("content")}
               value={content}
-              onTextChange={(e) => setContent(e.textValue || "")}
+              onTextChange={(e) => setValue("content", e.textValue || "")}
               placeholder="Write your blog content here..."
             />
-            <Button type="button" className="mt-4" onClick={() => setShowPreview(true)}>
+            {errors.content && (
+              <p className="text-red-500">{errors.content.message}</p>
+            )}
+
+            <Button
+              type="button"
+              className="mt-4"
+              onClick={() => setShowPreview(true)}
+            >
               Save
             </Button>
+
             {showPreview && (
               <div className="mt-6 p-4 border rounded bg-gray-50">
                 <h3 className="font-semibold mb-2">Preview</h3>
-                <p className="whitespace-pre-wrap">{content || "No content yet."}</p>
+                <p className="whitespace-pre-wrap">
+                  {content || "No content yet."}
+                </p>
               </div>
             )}
           </div>
 
           <div className="mb-12 flex flex-wrap gap-2">
             <input
+              type="text"
               value={newTag}
               onChange={(e) => setNewTag(e.target.value)}
               placeholder="Add tag"
               className="border rounded px-2 py-1 mr-2"
             />
+            {errors.tags && (
+              <p className="text-red-500">{errors.tags.message}</p>
+            )}
+
             <button
               type="button"
-              onClick={handleAddTag}
+              onClick={() => handleAddTag(newTag)}
               className="bg-blue-950 text-white px-3 py-1 rounded"
             >
               Add
             </button>
-            {tags.map((tag) => (
+
+            {tags?.map((tag: string) => (
               <span
                 key={tag}
                 className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full flex items-center gap-1"
@@ -140,24 +168,34 @@ const BlogForm = () => {
 
           <div className="my-14">
             <label className="mr-2 font-semibold">Category:</label>
-            <select {...register("category", { required: "Category is required" })} className="border rounded px-2 py-1 mb-4">
+            <select
+              {...register("category", { required: "Category is required" })}
+              className="border rounded px-2 py-1 mb-4"
+            >
               {categories.map((cat) => (
                 <option key={cat} value={cat}>
                   {cat}
                 </option>
               ))}
             </select>
+            {errors.category && (
+              <p className="text-red-500">{errors.category.message}</p>
+            )}
           </div>
 
           <div className="mt-4">
             <label className="mr-2 font-semibold">Reading Time:</label>
             <input
-              type="text"
-              value={readingTime ? `${readingTime} min` : ""}
+              {...register("readingTime", { valueAsNumber: true })}
+              type="number"
               readOnly
               className="border rounded px-2 py-1 bg-gray-100 cursor-not-allowed"
             />
+            {errors.readingTime && (
+              <p className="text-red-500">{errors.readingTime.message}</p>
+            )}
           </div>
+
           <Button
             type="submit"
             className="bg-blue-950 rounded-full cursor-pointer hover:bg-blue-900"
