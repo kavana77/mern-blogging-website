@@ -22,6 +22,9 @@ app.use("/src/uploads", express.static("src/uploads"))
 app.use("/api", routerUser);
 app.use("/api", routerBlog);
 app.use("/api", routerFile);
+app.get("/test", (req, res) => {
+  res.json({ message: "Hello world" });
+});
 
 const PORT = env.PORT || 5001;
 
