@@ -32,7 +32,7 @@ export const uploadToCloudinary = async (filePath: string) => {
     const result = await cloudinary.uploader.upload(filePath, {
       ...paramsToSign,
       signature,
-      api_key: process.env.CLOUDINARY_API_KEY!,
+      api_key: process.env.CLOUDINARY_API_KEY,
     });
 
     return result;

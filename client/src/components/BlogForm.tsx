@@ -4,7 +4,8 @@ import useBlogForm from "../hooks/useBlogForm";
 import { Editor } from "primereact/editor";
 import { useEffect, useState } from "react";
 import { blogSchema } from "../lib/zodSchema";
-
+import { ArrowLeftIcon} from "lucide-react";
+import { Link } from "react-router-dom";
 const BlogForm = () => {
   const categories = blogSchema.shape.category.options;
 
@@ -13,6 +14,7 @@ const BlogForm = () => {
     handleSubmit,
     onSubmit,
     errors,
+    isSubmitting,
     setValue,
     watch,
     getValues,
@@ -51,6 +53,9 @@ const BlogForm = () => {
   return (
     <>
       <nav className="sticky top-0 flex justify-between items-center w-full px-12 py-5 h-[80px] border-b border-grey bg-white">
+        <Link to="/" className="absolute z-10 left-7 text-gray-500 ">
+        <ArrowLeftIcon />
+        </Link>
         <img
           src="/public/blog-logo.png"
           className="object-cover w-28 md:w-34"
@@ -197,10 +202,10 @@ const BlogForm = () => {
           </div>
 
           <Button
-            type="submit"
+            type="submit" disabled={isSubmitting}
             className="bg-blue-950 rounded-full cursor-pointer hover:bg-blue-900"
           >
-            Publish
+            {isSubmitting ? "Publishing..." :"Publish"}
           </Button>
         </form>
       </section>

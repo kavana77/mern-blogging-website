@@ -16,11 +16,11 @@ export const getBlogs: RequestHandler = async (req, res, next) => {
 
     res.status(200).json({ posts: blogs, total });
   } catch (error) {
-    next(error);
+    res.status(500).json({message: "Error fetching Blogs", error})
   }
 };
 
-export const getBlogById: RequestHandler = async (req, res, next) => {
+export const getBlogById: RequestHandler = async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id);
     if (!blog) {
@@ -28,7 +28,38 @@ export const getBlogById: RequestHandler = async (req, res, next) => {
     }
     res.status(200).json({ message: "blog fetched successfully", blog });
   } catch (error) {
-    next(error);
+    res.status(500).json({message: "Error fetching Blogs", error})
   }
 };
 
+
+export const getBlogByTitle: RequestHandler = async (req , res) => {
+  
+  try {
+    const q = req.query.q as string
+    if(!q.trim()){
+      return res.status(200).send("No search result is found")
+    }
+    const blogs = await Blog.find({title: {$regex:q, $options: 'i'}})
+    if (blogs.length === 0) {
+      return res.status(200).json({ message: "No search results found", blogs});
+    }
+    res.status(200).send({message:"Fetched successfully", blogs})
+  } catch (error) {
+    res.status(500).json({message: "Error fetching blogs"})
+  }
+}
+
+export const updateBlogById: RequestHandler = async (req, res)=>{
+  try {
+    const id = req.params.id
+    const blogExist = await Blog.findById(id)
+    if(!blogExist){
+      return res.status(404).json({message: "Blog not found"})
+    }
+    const updatedBlog = await Blog.findByIdAndUpdate(id, req.body, {new: true})
+    res.status(200).json({message: "Blog updated successfully", updatedBlog})
+  } catch (error) {
+    res.status(500).send({message: "Error updating blog data", error})
+  }
+}

@@ -21,19 +21,6 @@ const blogSchema = new Schema<IBlog>({
     },
   },
   readingTime: { type: String }, 
-  reactions: {
-    like: { type: Number, default: 0 },
-    love: { type: Number, default: 0 },
-    fire: { type: Number, default: 0 },
-    wow: { type: Number, default: 0 },
-  },
-  comments: [
-    {
-      name: String,
-      comment: String,
-      date: { type: Date, default: Date.now },
-    },
-  ],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date },
 });

@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
 import { blogSchema, type BlogType } from "../lib/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createPost } from "../utils/http";
+import { createPost,   } from "../utils/http";
 
 const useBlogForm = () => {
+
   const {
     register,
     handleSubmit,
@@ -11,9 +12,10 @@ const useBlogForm = () => {
     formState: { errors, isSubmitting },
     setValue,
     watch,
-    getValues,
+    getValues,  
   } = useForm<BlogType>({
     resolver: zodResolver(blogSchema),
+    
   });
 
   const onSubmit = async (data: BlogType) => {
@@ -26,9 +28,11 @@ const useBlogForm = () => {
       formData.append("tags", data.tags.join(" , "));
       formData.append("category", data.category);
       formData.append("readingTime", data.readingTime.toString());
-
+      
+      
       const response = await createPost(formData);
       console.log(" Blog created:", response);
+      
       reset();
     } catch (error) {
       console.error(" Error submitting blog form:", error);

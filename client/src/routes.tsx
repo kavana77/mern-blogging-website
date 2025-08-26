@@ -20,6 +20,7 @@ const router = createBrowserRouter(
       </Route>
       ,
       <Route path="/editor" element={<Editor />} />
+      <Route path="/editor/:id" element={<Editor/>}/>
     </>
   )
 );

@@ -5,9 +5,10 @@ import BlogForm from "../components/BlogForm";
 
 
 const Editor = () => {
+
     return ( 
         <>
-        <BlogForm/>
+        <BlogForm />
         </>
      );
 }

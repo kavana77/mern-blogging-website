@@ -1,4 +1,3 @@
-import multer from "multer";
 import express from "express";
 import {  Request, Response, NextFunction } from "express";
 import upload from "../middleware/fileUpload";

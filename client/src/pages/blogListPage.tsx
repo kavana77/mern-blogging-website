@@ -2,8 +2,16 @@ import { Loader2 } from "lucide-react";
 import usePosts from "../hooks/usePosts";
 import InfiniteScrollContainer from "../components/InfiniteScrollContainer";
 import Post from "../components/Post";
-
+// import { useLocation } from "react-router-dom";
+// import { useQuery } from "@tanstack/react-query";
+// const useQueryParams = () => new URLSearchParams(useLocation().search)
 const BlogListPage = () => {
+  // const queryParams = useQueryParams()
+  // const search = queryParams.get("q")
+  // const {data, isLoading, isError} = useQuery({
+  //   queryKey: ["searchResults",search],
+  //   queryFn: () => searchBlogs
+  // })
   const {
     data,
     isPending,

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Text from "../components/ui/text";
 import { fetchBlogById } from "../utils/http";
@@ -27,15 +27,10 @@ const BlogDetail = () => {
       />
       <Text className="text-3xl font-bold">{blog.title}</Text>
       {/* <p className="text-gray-500 text-sm">
-        ✍️ {blog.author.name} • 🕒 {blog.readingTime} • 🗓️{" "}
+         {blog.author.name} •  {blog.readingTime} • {" "}
         {new Date(blog.createdAt).toLocaleDateString()}
       </p> */}
       <Text className="text-gray-700 leading-7">{blog.content}</Text>
-
-      <div className="text-sm text-gray-600 mt-4">
-        ❤️ {blog.reactions.like} | 🔥 {blog.reactions.fire} | 😍{" "}
-        {blog.reactions.love} | 😲 {blog.reactions.wow}
-      </div>
 
       <div className="text-xs text-gray-400 mt-2">
         📂 Category: {blog.category}
