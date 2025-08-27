@@ -4,8 +4,9 @@ import useBlogForm from "../hooks/useBlogForm";
 import { Editor } from "primereact/editor";
 import { useEffect, useState } from "react";
 import { blogSchema } from "../lib/zodSchema";
-import { ArrowLeftIcon} from "lucide-react";
-import { Link } from "react-router-dom";
+import { ArrowLeftIcon } from "lucide-react";
+import { Link} from "react-router-dom";
+
 const BlogForm = () => {
   const categories = blogSchema.shape.category.options;
 
@@ -19,6 +20,8 @@ const BlogForm = () => {
     watch,
     getValues,
   } = useBlogForm();
+
+
   const [showPreview, setShowPreview] = useState(false);
   const [newTag, setNewTag] = useState("");
 
@@ -54,7 +57,7 @@ const BlogForm = () => {
     <>
       <nav className="sticky top-0 flex justify-between items-center w-full px-12 py-5 h-[80px] border-b border-grey bg-white">
         <Link to="/" className="absolute z-10 left-7 text-gray-500 ">
-        <ArrowLeftIcon />
+          <ArrowLeftIcon />
         </Link>
         <img
           src="/public/blog-logo.png"
@@ -125,7 +128,7 @@ const BlogForm = () => {
               className="mt-4"
               onClick={() => setShowPreview(true)}
             >
-              Save
+              Preview
             </Button>
 
             {showPreview && (
@@ -153,7 +156,7 @@ const BlogForm = () => {
             <button
               type="button"
               onClick={() => handleAddTag(newTag)}
-              className="bg-blue-950 text-white px-3 py-1 rounded"
+              className="bg-black text-white px-3 py-1 rounded"
             >
               Add
             </button>
@@ -200,13 +203,16 @@ const BlogForm = () => {
               <p className="text-red-500">{errors.readingTime.message}</p>
             )}
           </div>
-
+        <div className="flex justify-center mt-12">
           <Button
-            type="submit" disabled={isSubmitting}
-            className="bg-blue-950 rounded-full cursor-pointer hover:bg-blue-900"
+            type="submit"
+            disabled={isSubmitting}
+            className="bg-blue-950 rounded-full cursor-pointer hover:bg-blue-900  px-8 py-6 text-xl"
           >
-            {isSubmitting ? "Publishing..." :"Publish"}
+            {isSubmitting ? "Publishing..." : "Publish"}
           </Button>
+          </div>
+
         </form>
       </section>
     </>

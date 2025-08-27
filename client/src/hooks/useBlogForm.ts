@@ -1,10 +1,13 @@
 import { useForm } from "react-hook-form";
 import { blogSchema, type BlogType } from "../lib/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createPost,   } from "../utils/http";
+import { createPost, fetchBlogById, updateBlog } from "../utils/http";
+import {  useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 const useBlogForm = () => {
-
+  const { id } = useParams<{id: string}>();
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -12,31 +15,37 @@ const useBlogForm = () => {
     formState: { errors, isSubmitting },
     setValue,
     watch,
-    getValues,  
+    getValues,
   } = useForm<BlogType>({
     resolver: zodResolver(blogSchema),
-    
   });
+  useEffect(()=>{
+    if(id){
+        fetchBlogById(id).then((data)=>{
+            console.log("Prefill blog data: ",data)
+            reset(data)
+        })
+    }
+  },[id,reset])
 
-  const onSubmit = async (data: BlogType) => {
+  const onSubmit = async (formData: BlogType) => {
     try {
-      const formData = new FormData();
-      formData.append("title", data.title);
-      formData.append("firstLine", data.firstLine);
-      formData.append("content", data.content);
-      formData.append("file", data.image);
-      formData.append("tags", data.tags.join(" , "));
-      formData.append("category", data.category);
-      formData.append("readingTime", data.readingTime.toString());
-      
-      
-      const response = await createPost(formData);
-      console.log(" Blog created:", response);
-      
-      reset();
+      const data = new FormData();
+      data.append("title", formData.title);
+      data.append("firstLine", formData.firstLine);
+      data.append("content", formData.content);
+      data.append("file", formData.image);
+      data.append("tags", formData.tags.join(" , "));
+      data.append("category", formData.category);
+      data.append("readingTime", formData.readingTime.toString());
+      if (id) {
+        await updateBlog(id, data);
+      } else {
+        await createPost(data);
+      }
+      navigate('/')
     } catch (error) {
       console.error(" Error submitting blog form:", error);
-      alert((error as Error).message);
     }
   };
 

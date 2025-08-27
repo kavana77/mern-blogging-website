@@ -4,9 +4,6 @@ import Blog from "../models/Blog";
 
 export const fileController: RequestHandler = async (req, res) => {
   try {
-    console.log("FILE RECEIVED:", req.file);
-    console.log("BODY RECEIVED:", req.body);
-
     if (!req.file) {
       return res
         .status(400)

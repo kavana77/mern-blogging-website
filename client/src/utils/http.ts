@@ -94,13 +94,15 @@ export const searchBlogs = async (search: string
 }
 
 export const updateBlog= async (id: string, formData: FormData)=>{
-    const response = await fetch(`api/updateblog/${id}`,{
+    const response = await fetch(`http://localhost:5000/api/updateblog/${id}`,{
         method: "PUT",
        body: formData,
     })
     if(!response.ok){
-        throw new Error("Failed to update blog data")
+        const errorText = await response.text()
+        throw new Error(`Failed to update blog data ${errorText}`)
     }
+    console.log("update response:", response)
     return response.json()
 }
 

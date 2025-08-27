@@ -19,17 +19,6 @@ export interface IBlog extends Document {
         }
     }
     readingTime?: string;
-    reactions: {
-        like: number;
-        love: number;
-        fire: number;
-        wow: number;
-    }
-    comments: {
-        name: string;
-        comment: string;
-        date: Date;
-    }[]
     createdAt: Date;
     updatedAt?: Date;
 }

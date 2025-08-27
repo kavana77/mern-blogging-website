@@ -1,5 +1,7 @@
 import Blog from "../models/Blog";
 import { RequestHandler } from "express";
+import { cloudinaryUpload } from "../service/fileService";
+
 
 
 export const getBlogs: RequestHandler = async (req, res, next) => {
@@ -57,7 +59,22 @@ export const updateBlogById: RequestHandler = async (req, res)=>{
     if(!blogExist){
       return res.status(404).json({message: "Blog not found"})
     }
-    const updatedBlog = await Blog.findByIdAndUpdate(id, req.body, {new: true})
+    const updateData:any = {
+      title: req.body.title,
+      firstLine: req.body.firstLine,
+      tags: req.body.tags,
+      content: req.body.content,
+      category: req.body.category,
+      readingTime: req.body.readingTime
+    }
+    if(req.file){
+      const response = await cloudinaryUpload(req.file)
+      updateData.image = response?.secure_url
+      updateData.imagePublicId = response?.public_id
+    }
+   
+   
+    const updatedBlog = await Blog.findByIdAndUpdate(id, updateData, {new: true})
     res.status(200).json({message: "Blog updated successfully", updatedBlog})
   } catch (error) {
     res.status(500).send({message: "Error updating blog data", error})

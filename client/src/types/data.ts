@@ -41,12 +41,6 @@ export type Blog = {
   category: string;
   readingTime: string;
   tags: string[];
-  reactions: {
-    like: number;
-    love: number;
-    fire: number;
-    wow: number;
-  };
   // author: {
   //   name: string;
   // };

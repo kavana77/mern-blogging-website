@@ -7,7 +7,8 @@ import RootLayout from "./layout/rootLayout";
 import BlogListPage from "./pages/blogListPage";
 import BlogDetail from "./pages/blogDetailsPage";
 import UserAuthForm from "./pages/userAuthForm";
-import Editor from "./pages/editorPage";
+import PostForm from "./pages/postPage";
+// import EditPage from "./pages/editPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,8 +20,8 @@ const router = createBrowserRouter(
         <Route path="signup" element={<UserAuthForm type="sign-up" />} />
       </Route>
       ,
-      <Route path="/editor" element={<Editor />} />
-      <Route path="/editor/:id" element={<Editor/>}/>
+      <Route path="/editor" element={<PostForm />} />
+      <Route path="/editor/:id" element={<PostForm/>}/>
     </>
   )
 );

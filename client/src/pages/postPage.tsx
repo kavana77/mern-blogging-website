@@ -4,7 +4,7 @@ import BlogForm from "../components/BlogForm";
 
 
 
-const Editor = () => {
+const PostForm = () => {
 
     return ( 
         <>
@@ -13,4 +13,4 @@ const Editor = () => {
      );
 }
  
-export default Editor;
+export default PostForm;
