@@ -8,11 +8,16 @@ import connectDB from "./config/db";
 import env from "./utils/validation";
 import path from "path"
 import fs from "fs"
+import cookieParser from "cookie-parser"
 
 const app= express();
 
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 app.use(express.json());
+app.use(cookieParser())
 
 const uploadDir = path.join(__dirname, "uploads")
 if(!fs.existsSync(uploadDir)){

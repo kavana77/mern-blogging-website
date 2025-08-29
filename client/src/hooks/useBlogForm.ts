@@ -2,31 +2,28 @@ import { useForm } from "react-hook-form";
 import { blogSchema, type BlogType } from "../lib/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createPost, fetchBlogById, updateBlog } from "../utils/http";
-import {  useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const useBlogForm = () => {
-  const { id } = useParams<{id: string}>();
-  const navigate = useNavigate()
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
     setValue,
     watch,
     getValues,
   } = useForm<BlogType>({
     resolver: zodResolver(blogSchema),
+    defaultValues: async () => {
+      if (id) {
+        const data = await fetchBlogById(id);
+        console.log("Prefill blog data", data);
+        return data;
+      }
+    },
   });
-  useEffect(()=>{
-    if(id){
-        fetchBlogById(id).then((data)=>{
-            console.log("Prefill blog data: ",data)
-            reset(data)
-        })
-    }
-  },[id,reset])
 
   const onSubmit = async (formData: BlogType) => {
     try {
@@ -43,9 +40,10 @@ const useBlogForm = () => {
       } else {
         await createPost(data);
       }
-      navigate('/')
+      navigate("/");
     } catch (error) {
       console.error(" Error submitting blog form:", error);
+      alert("You must be signed in to create a blog");
     }
   };
 

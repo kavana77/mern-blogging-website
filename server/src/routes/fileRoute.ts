@@ -2,11 +2,12 @@ import express from "express";
 import {  Request, Response, NextFunction } from "express";
 import upload from "../middleware/fileUpload";
 import { fileController } from "../controllers/fileController";
+import authenticateJWT from "../middleware/authentication";
 
 const router = express.Router();
 
 router.post(
-  "/upload",
+  "/upload",authenticateJWT,
   upload.single("file"),  
   (req: Request, res: Response, next: NextFunction) => {
     if (!req.file) {

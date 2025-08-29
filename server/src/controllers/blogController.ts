@@ -3,8 +3,18 @@ import { RequestHandler } from "express";
 import { cloudinaryUpload } from "../service/fileService";
 
 
-
-export const getBlogs: RequestHandler = async (req, res, next) => {
+export const getLimitedBlogs: RequestHandler = async (req , res)=>{
+  try {
+    const blog = await Blog.find().limit(5)
+    if(blog.length === 0){
+      return res.status(400).json({message: "No Blogs found"})
+    }
+    res.status(200).json({message: "Blogs fetched successfully", blog})
+  } catch (error) {
+    res.status(500).json({message: "Failed to fetch the blog", error})
+  }
+}
+export const getBlogs: RequestHandler = async (req, res) => {
   try {
     const page = parseInt(req.query.page as string);
     const limit = parseInt(req.query.limit as string);

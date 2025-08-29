@@ -3,18 +3,27 @@ import { Input } from "./ui/input";
 import { IoIosSearch } from "react-icons/io";
 import { RiFileEditLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
-
+import { Button } from "./ui/button";
+import { logout } from "../utils/http";
 
 const Navbar = () => {
- const [searchBoxVisibility, setSearchBoxVisibility] = useState(false);
- const navigate = useNavigate()
-  const handleSearch= (e: React.KeyboardEvent<HTMLInputElement>)=> {
-    const query = e.currentTarget.value 
-    console.log(e)
-    if(e.key === 'Enter' && query.length){
-        navigate(`/search?q=${encodeURIComponent(query)}`);
+  const [searchBoxVisibility, setSearchBoxVisibility] = useState(false);
+  const navigate = useNavigate();
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const query = e.currentTarget.value;
+    console.log(e);
+    if (e.key === "Enter" && query.length) {
+      navigate(`/search?q=${encodeURIComponent(query)}`);
     }
-  }
+  };
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/signin");
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
   return (
     <nav className=" z-10 sticky top-0 flex md:gap-6 items-center w-full px-12 py-5 h-[80px] border-b border-grey bg-white">
       <img src="/public/blog-logo.png" className="object-cover w-28 md:w-34" />
@@ -27,10 +36,8 @@ const Navbar = () => {
           type="text"
           placeholder="Search.."
           className="w-full md:w-auto bg-grey p-4 pl-6 pr-[12%] md:pr-6 rounded-full md:pl-12"
-          
           onKeyDown={handleSearch}
         />
-
 
         <IoIosSearch className="absolute right-[10%] top-1/2 -translate-y-1/2 md:pointer-events-none md:left-5" />
       </div>
@@ -61,6 +68,7 @@ const Navbar = () => {
       >
         Sign Up
       </Link>
+      <Button onClick={handleLogout}>Logout</Button>
     </nav>
   );
 };

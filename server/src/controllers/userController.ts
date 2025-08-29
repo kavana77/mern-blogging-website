@@ -24,8 +24,7 @@ res.status(201).json({
   message: "User created successfully", 
   user 
 });  } catch (error) {
-    next(error);
-  }
+  res.status(500).json({ message: "Failed to sign up", error } ) }
 };
 
 
@@ -41,16 +40,32 @@ export const SignIn: RequestHandler = async (req, res, next) => {
     if (!isPasswordMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
-    const access_Token = jwt.sign( {_id: user._id}, env.ACCESS_TOKEN_SECRET)
+    const token = jwt.sign( {_id: user._id}, env.ACCESS_TOKEN_SECRET)
+    res.cookie("token", token,{
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+    })
    return res.status(200).json({
       message: "Signed in successfully",
-      access_Token,
-      user: {
-        fullname: user.fullname,
-        email: user.email,
-      },
+      token,
+      user
     });
   } catch (error) {
     next(error);
   }
 };
+
+
+export const logout:RequestHandler = async (req ,res)=>{
+  try {
+    res.clearCookie("token",{
+      httpOnly:true,
+      secure: false,
+      sameSite:'lax'
+    })
+    res.status(200).json({message: "Logout Successfully"})
+  } catch (error) {
+    res.status(500).json({message: "Server error", error})
+  }
+}
