@@ -5,7 +5,7 @@ import { Editor } from "primereact/editor";
 import { useEffect, useState } from "react";
 import { blogSchema } from "../lib/zodSchema";
 import { ArrowLeftIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 const BlogForm = () => {
   const categories = blogSchema.shape.category.options;
@@ -20,6 +20,7 @@ const BlogForm = () => {
     watch,
     getValues,
   } = useBlogForm();
+
 
   const [showPreview, setShowPreview] = useState(false);
   const [newTag, setNewTag] = useState("");
@@ -202,15 +203,16 @@ const BlogForm = () => {
               <p className="text-red-500">{errors.readingTime.message}</p>
             )}
           </div>
-          <div className="flex justify-center mt-12">
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="bg-blue-950 rounded-full cursor-pointer hover:bg-blue-900  px-8 py-6 text-xl"
-            >
-              {isSubmitting ? "Publishing..." : "Publish"}
-            </Button>
+        <div className="flex justify-center mt-12">
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="bg-blue-950 rounded-full cursor-pointer hover:bg-blue-900  px-8 py-6 text-xl"
+          >
+            {isSubmitting ? "Publishing..." : "Publish"}
+          </Button>
           </div>
+
         </form>
       </section>
     </>

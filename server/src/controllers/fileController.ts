@@ -5,6 +5,7 @@ import Blog from "../models/Blog";
 export const fileController: RequestHandler = async (req, res) => {
   try {
     if (!req.file) {
+      console.error("No file found in controller");
       return res
         .status(400)
         .json({ error: { description: "No file uploaded" } });
@@ -29,7 +30,8 @@ export const fileController: RequestHandler = async (req, res) => {
       message: "File uploaded successfully",
       uploadResult: response,
     });
-  } catch (error: any) {
-    return res.status(500).json({ message: error.message });
+  } catch (error) {
+    console.error("Controller error:", error);
+    return res.status(500).json({ message: "Failed to upload file", error });
   }
 };

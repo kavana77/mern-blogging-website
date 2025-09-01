@@ -8,7 +8,11 @@ const storage = multer.diskStorage({
   },
 });
 
-const fileFilter = (_req: Express.Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+const fileFilter = (
+  _req: Express.Request,
+  file: Express.Multer.File,
+  cb: multer.FileFilterCallback
+) => {
   const allowed = /jpeg|jpg|png|gif/;
   const extname = allowed.test(path.extname(file.originalname).toLowerCase());
   const mimetype = allowed.test(file.mimetype);

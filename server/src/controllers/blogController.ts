@@ -7,17 +7,15 @@ export const getLimitedBlogs: RequestHandler = async (req, res) => {
     const blog = await Blog.find(
       {},
       "title firstLine image createdAt author.name"
-    ).limit(5);
+    ).limit(3);
     if (blog.length === 0) {
       return res.status(400).json({ message: "No Blogs found" });
     }
-    res
-      .status(200)
-      .json({
-        message: "Blogs fetched successfully",
-        posts: blog,
-        total: blog.length,
-      });
+    res.status(200).json({
+      message: "Blogs fetched successfully",
+      posts: blog,
+      total: blog.length,
+    });
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch the blog", error });
   }

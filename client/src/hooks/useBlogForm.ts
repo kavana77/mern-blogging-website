@@ -17,16 +17,17 @@ const useBlogForm = () => {
   } = useForm<BlogType>({
     resolver: zodResolver(blogSchema),
     defaultValues: async () => {
-      const data = await fetchBlogById(id);
-      return {
-        title: data.blog.title,
-        firstLine: data.blog.firstLine,
-        content: data.blog.content,
-        image: data.blog.image,
-        tags: data.blog.tags,
-        category: data.blog.category,
-        readingTime: data.blog.readingTime,
-      };
+        const data = await fetchBlogById(id);
+        return {
+          title: data.blog.title,
+          firstLine: data.blog.firstLine,
+          content: data.blog.content,
+          image: data.blog.image,
+          tags: data.blog.tags,
+          category: data.blog.category,
+          readingTime: data.blog.readingTime
+      
+      }
     },
   });
 
@@ -48,8 +49,7 @@ const useBlogForm = () => {
       navigate("/");
     } catch (error) {
       console.error(" Error submitting blog form:", error);
-      alert("You must be signed in to create a blog");
-    }
+      alert((error as Error).message);}
   };
 
   return {

@@ -1,8 +1,8 @@
 import { RequestHandler } from "express";
 import User from "../models/User";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken"
-import env from "../utils/validation"
+import jwt from "jsonwebtoken";
+import env from "../utils/validation";
 
 export const signUp: RequestHandler = async (req, res, next) => {
   const { fullname, email, password } = req.body;
@@ -17,16 +17,17 @@ export const signUp: RequestHandler = async (req, res, next) => {
       return res.status(500).json({ message: "Error hashing password" });
     }
 
-    const user = new User( {fullname, email, password: hashedPassword });
+    const user = new User({ fullname, email, password: hashedPassword });
     await user.save();
 
-res.status(201).json({ 
-  message: "User created successfully", 
-  user 
-});  } catch (error) {
-  res.status(500).json({ message: "Failed to sign up", error } ) }
+    res.status(201).json({
+      message: "User created successfully",
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to sign up", error });
+  }
 };
-
 
 export const SignIn: RequestHandler = async (req, res, next) => {
   const { email, password } = req.body;
@@ -40,32 +41,31 @@ export const SignIn: RequestHandler = async (req, res, next) => {
     if (!isPasswordMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
-    const token = jwt.sign( {_id: user._id}, env.ACCESS_TOKEN_SECRET)
-    res.cookie("token", token,{
+    const token = jwt.sign({ _id: user._id }, env.ACCESS_TOKEN_SECRET);
+    res.cookie("token", token, {
       httpOnly: true,
       secure: false,
-      sameSite: 'lax',
-    })
-   return res.status(200).json({
+      sameSite: "lax",
+    });
+    return res.status(200).json({
       message: "Signed in successfully",
       token,
-      user
+      user,
     });
   } catch (error) {
     next(error);
   }
 };
 
-
-export const logout:RequestHandler = async (req ,res)=>{
+export const logout: RequestHandler = async (req, res) => {
   try {
-    res.clearCookie("token",{
-      httpOnly:true,
+    res.clearCookie("token", {
+      httpOnly: true,
       secure: false,
-      sameSite:'lax'
-    })
-    res.status(200).json({message: "Logout Successfully"})
+      sameSite: "lax",
+    });
+    res.status(200).json({ message: "Logout Successfully" });
   } catch (error) {
-    res.status(500).json({message: "Server error", error})
+    res.status(500).json({ message: "Server error", error });
   }
-}
+};
