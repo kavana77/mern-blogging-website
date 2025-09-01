@@ -6,26 +6,23 @@ import {
   type SignUpType,
 } from "../lib/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
 import { signInUser, signUpUser } from "../utils/http";
 import { useNavigate } from "react-router-dom";
+import useAuth from "./useAuth";
 
 const useUserAuthForm = (type: "sign-in" | "sign-up") => {
   const isSignIn = type === "sign-in";
   const navigate = useNavigate();
+  const { signIn } = useAuth();
   const form = useForm<SignUpType | SignInType>({
     resolver: zodResolver(isSignIn ? signInSchema : signUpSchema),
   });
   const { reset } = form;
-
-  useEffect(() => {
-    reset();
-  }, [type, reset]);
-
   const onSubmit = async (data: FieldValues) => {
     try {
       if (isSignIn) {
         await signInUser(data as SignInType);
+        signIn();
         navigate("/");
       } else {
         await signUpUser(data as SignUpType);

@@ -5,25 +5,29 @@ import { RiFileEditLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { logout } from "../utils/http";
+import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
   const [searchBoxVisibility, setSearchBoxVisibility] = useState(false);
   const navigate = useNavigate();
-  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const query = e.currentTarget.value;
-    console.log(e);
-    if (e.key === "Enter" && query.length) {
-      navigate(`/search?q=${encodeURIComponent(query)}`);
+  const { isSignIn, signOut } = useAuth();
+
+  console.log("isSignIn", isSignIn);
+  const handleSearch = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const query = e.currentTarget.value.trim();
+    if (e.key === "Enter" && query) {
+      navigate(`/searching?q=${query}`);
     }
   };
   const handleLogout = async () => {
     try {
       await logout();
-      navigate("/signin");
+      signOut();
     } catch (error) {
       console.error("Logout failed", error);
     }
   };
+
   return (
     <nav className=" z-10 sticky top-0 flex md:gap-6 items-center w-full px-12 py-5 h-[80px] border-b border-grey bg-white">
       <img src="/public/blog-logo.png" className="object-cover w-28 md:w-34" />
@@ -56,19 +60,26 @@ const Navbar = () => {
         <RiFileEditLine />
         <p>Write</p>
       </Link>
-      <Link
-        to="signin"
-        className="whitespace-nowrap bg-blue-950 text-white rounded-full py-1 px-2 capitalize hover:bg-opacity-80 ml-2 lg:ml-9"
-      >
-        <p>Sign In</p>
-      </Link>
-      <Link
-        to="signup"
-        className="whitespace-nowrap bg-pink-700 text-white rounded-full py-1 px-2 capitalize hover:bg-opacity-80  lg:ml-9 hidden md:block"
-      >
-        Sign Up
-      </Link>
-      <Button onClick={handleLogout}>Logout</Button>
+      {!isSignIn ? (
+        <>
+          <Link
+            to="signin"
+            className="whitespace-nowrap bg-blue-950 text-white rounded-full py-1 px-2 capitalize hover:bg-opacity-80 ml-2 lg:ml-9"
+          >
+            <p>Sign In</p>
+          </Link>
+          <Link
+            to="signup"
+            className="whitespace-nowrap bg-pink-700 text-white rounded-full py-1 px-2 capitalize hover:bg-opacity-80  lg:ml-9 hidden md:block"
+          >
+            Sign Up
+          </Link>
+        </>
+      ) : (
+        <Button onClick={handleLogout} className="cursor-pointer">
+          Logout
+        </Button>
+      )}
     </nav>
   );
 };

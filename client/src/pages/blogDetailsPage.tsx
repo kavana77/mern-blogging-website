@@ -1,16 +1,13 @@
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Text from "../components/ui/text";
 import { fetchBlogById } from "../utils/http";
-import type { Blog } from "../types/data";
 
 const BlogDetail = () => {
-  const { id } = useParams();
-
-  const { data, isLoading, error } = useQuery<Blog>({
+  const { id } = useParams<{ id: string }>();
+  const { data, isLoading, error } = useQuery({
     queryKey: ["blog", id],
-    queryFn: () => fetchBlogById(id!),
-    enabled: !!id,
+    queryFn: () => fetchBlogById(id),
   });
 
   if (isLoading) return <p>Loading...</p>;
@@ -26,18 +23,12 @@ const BlogDetail = () => {
         className="w-full h-auto rounded-lg"
       />
       <Text className="text-3xl font-bold">{blog.title}</Text>
-      {/* <p className="text-gray-500 text-sm">
-         {blog.author.name} •  {blog.readingTime} • {" "}
-        {new Date(blog.createdAt).toLocaleDateString()}
-      </p> */}
       <Text className="text-gray-700 leading-7">{blog.content}</Text>
 
       <div className="text-xs text-gray-400 mt-2">
-        📂 Category: {blog.category}
+        Category: {blog.category}
       </div>
-      <div className="text-xs text-gray-400">
-        🏷️ Tags: {blog.tags.join(", ")}
-      </div>
+      <div className="text-xs text-gray-400">Tags: {blog.tags.join(", ")}</div>
       <div>Reading Time: {blog.readingTime} min 📖</div>
     </div>
   );

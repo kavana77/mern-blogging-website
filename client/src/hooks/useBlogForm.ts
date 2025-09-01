@@ -5,7 +5,7 @@ import { createPost, fetchBlogById, updateBlog } from "../utils/http";
 import { useNavigate, useParams } from "react-router-dom";
 
 const useBlogForm = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams();
   const navigate = useNavigate();
   const {
     register,
@@ -17,11 +17,16 @@ const useBlogForm = () => {
   } = useForm<BlogType>({
     resolver: zodResolver(blogSchema),
     defaultValues: async () => {
-      if (id) {
-        const data = await fetchBlogById(id);
-        console.log("Prefill blog data", data);
-        return data;
-      }
+      const data = await fetchBlogById(id);
+      return {
+        title: data.blog.title,
+        firstLine: data.blog.firstLine,
+        content: data.blog.content,
+        image: data.blog.image,
+        tags: data.blog.tags,
+        category: data.blog.category,
+        readingTime: data.blog.readingTime,
+      };
     },
   });
 

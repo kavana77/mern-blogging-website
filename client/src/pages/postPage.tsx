@@ -1,16 +1,11 @@
-
-
 import BlogForm from "../components/BlogForm";
 
-
-
 const PostForm = () => {
+  return (
+    <>
+      <BlogForm />
+    </>
+  );
+};
 
-    return ( 
-        <>
-        <BlogForm />
-        </>
-     );
-}
- 
 export default PostForm;
