@@ -88,6 +88,11 @@ export const updateBlogById: RequestHandler = async (req, res) => {
       const response = await cloudinaryUpload(req.file);
       updateData.image = response?.secure_url;
       updateData.imagePublicId = response?.public_id;
+    } else if (req.body.imageUrl) {
+      updateData.image = req.body.imageUrl
+    }else {
+      updateData.image = blogExist.image
+      updateData.imagePublicId = blogExist.imagePublicId
     }
 
     const updatedBlog = await Blog.findByIdAndUpdate(id, updateData, {

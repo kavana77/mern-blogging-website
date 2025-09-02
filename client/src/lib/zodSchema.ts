@@ -15,7 +15,8 @@ export const blogSchema = z.object({
   title: z.string().min(1, "Title is required"),
   firstLine: z.string().min(5, "Please enter firstline for your content"),
   content: z.string().trim().min(1, "Content connot be empty"),
-  image: z.instanceof(File, { message: "Image is required" }),
+  image: z.union([z.instanceof(File), z.undefined()]).optional(),
+  imageUrl: z.string().optional(),
   tags: z
     .array(z.string().min(1, "Tag connot be empty"))
     .max(10, "Maximum 10 tags allowed")

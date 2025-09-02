@@ -3,9 +3,9 @@ import DefaultBanner from "../assets/images/blogbanner.png";
 import useBlogForm from "../hooks/useBlogForm";
 import { Editor } from "primereact/editor";
 import { useEffect, useState } from "react";
-import { blogSchema } from "../lib/zodSchema";
 import { ArrowLeftIcon } from "lucide-react";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { blogSchema } from "../lib/zodSchema";
 
 const BlogForm = () => {
   const categories = blogSchema.shape.category.options;
@@ -21,12 +21,13 @@ const BlogForm = () => {
     getValues,
   } = useBlogForm();
 
-
   const [showPreview, setShowPreview] = useState(false);
   const [newTag, setNewTag] = useState("");
 
   const content = watch("content", "");
   const tags = watch("tags", []);
+  const image = watch("image");
+  const imageUrl = watch("imageUrl");
 
   const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
   const readingTime = Math.ceil(wordCount / 100);
@@ -53,6 +54,8 @@ const BlogForm = () => {
     );
   };
 
+  // const imageValue = watch("image");
+
   return (
     <>
       <nav className="sticky top-0 flex justify-between items-center w-full px-12 py-5 h-[80px] border-b border-grey bg-white">
@@ -66,31 +69,36 @@ const BlogForm = () => {
       </nav>
 
       <section className="mx-auto max-w-[900px] w-full p-12 my-8">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div className="aspect-video bg-white border-4 border-gray-200 mb-6">
             <label htmlFor="uploadBanner" className="cursor-pointer">
               <img
                 src={
-                  watch("image") && watch("image") instanceof File
-                    ? URL.createObjectURL(watch("image") as File)
-                    : DefaultBanner
+                  image instanceof File
+                    ? URL.createObjectURL(image)
+                    : imageUrl || DefaultBanner
                 }
+                // src={
+                //   watch("image") && watch("image") instanceof File
+                //     ? URL.createObjectURL(watch("image") as File)
+                //     : watch("image") as string || DefaultBanner
+                // }
                 className="w-full h-full object-cover"
               />
               <input
-                {...register("image", { required: "Image is required" })}
                 id="uploadBanner"
                 type="file"
                 accept=".png,.jpg,.jpeg"
                 hidden
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) setValue("image", file, { shouldValidate: true });
+                  if (file) {
+                    setValue("image", file);
+                  }
                 }}
               />
-              {errors.image && (
-                <p className="text-red-500">{errors.image.message}</p>
-              )}
             </label>
           </div>
 
@@ -203,16 +211,15 @@ const BlogForm = () => {
               <p className="text-red-500">{errors.readingTime.message}</p>
             )}
           </div>
-        <div className="flex justify-center mt-12">
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            className="bg-blue-950 rounded-full cursor-pointer hover:bg-blue-900  px-8 py-6 text-xl"
-          >
-            {isSubmitting ? "Publishing..." : "Publish"}
-          </Button>
+          <div className="flex justify-center mt-12">
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="bg-blue-950 rounded-full cursor-pointer hover:bg-blue-900  px-8 py-6 text-xl"
+            >
+              {isSubmitting ? "Publishing..." : "Publish"}
+            </Button>
           </div>
-
         </form>
       </section>
     </>

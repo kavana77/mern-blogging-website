@@ -18,17 +18,20 @@ const useBlogForm = () => {
     resolver: zodResolver(blogSchema),
     defaultValues: async () => {
         const data = await fetchBlogById(id);
+        console.log("Fetched blog data:", data)
         return {
           title: data.blog.title,
           firstLine: data.blog.firstLine,
           content: data.blog.content,
-          image: data.blog.image,
+          image: undefined,
+          imageUrl: data.blog.image ,
           tags: data.blog.tags,
           category: data.blog.category,
           readingTime: data.blog.readingTime
       
       }
-    },
+    }
+   
   });
 
   const onSubmit = async (formData: BlogType) => {
@@ -37,10 +40,14 @@ const useBlogForm = () => {
       data.append("title", formData.title);
       data.append("firstLine", formData.firstLine);
       data.append("content", formData.content);
-      data.append("file", formData.image);
       data.append("tags", formData.tags.join(" , "));
       data.append("category", formData.category);
       data.append("readingTime", formData.readingTime.toString());
+      if(formData.image instanceof File) {
+        data.append("file", formData.image)
+      } else if (formData.imageUrl) {
+      data.append("imageUrl", formData.imageUrl);
+    }
       if (id) {
         await updateBlog(id, data);
       } else {
