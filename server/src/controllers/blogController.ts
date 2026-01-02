@@ -54,12 +54,12 @@ export const getBlogByTitle: RequestHandler = async (req, res) => {
   try {
     const q = req.query.q as string;
     if (!q.trim()) {
-      return res.status(200).json("No search result is found");
+      return res.status(400).json("No search result is found");
     }
     const blogs = await Blog.find({ title: { $regex: q, $options: "i" } });
     if (blogs.length === 0) {
       return res
-        .status(200)
+        .status(400)
         .json({ message: "No search results found", blogs });
     }
     res.status(200).json({ message: "Fetched successfully", blogs });

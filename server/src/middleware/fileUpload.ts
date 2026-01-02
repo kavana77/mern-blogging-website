@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
   filename: (_req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
   },
-});
+})
 
 const fileFilter = (
   _req: Express.Request,
@@ -21,7 +21,7 @@ const fileFilter = (
   } else {
     cb(new Error("Only images are allowed"));
   }
-};
+}
 
 const upload = multer({ storage, fileFilter });
 

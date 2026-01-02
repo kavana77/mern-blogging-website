@@ -5,7 +5,6 @@ import Blog from "../models/Blog";
 export const fileController: RequestHandler = async (req, res) => {
   try {
     if (!req.file) {
-      console.error("No file found in controller");
       return res
         .status(400)
         .json({ error: { description: "No file uploaded" } });
