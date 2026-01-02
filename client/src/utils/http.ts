@@ -17,7 +17,7 @@ export const signUpUser = async (data: {
 };
 
 export const signInUser = async (data: { email: string; password: string }) => {
-  const response = await fetch("http://localhost:5000/api/signin", {
+  const response = await fetch("https://mern-blogging-website-1.onrender.com/api/signin", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
