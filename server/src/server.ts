@@ -14,7 +14,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://mern-blogging-website-scyf.vercel.app",
+    origin: "https://mern-blogging-website-scyf.vercel.app/",
     credentials: true,
   })
 );
