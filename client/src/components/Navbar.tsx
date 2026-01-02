@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { logout } from "../utils/http";
 import useAuth from "../hooks/useAuth";
+import BlogIcon from "../../public/blog-logo.png"
 
 const Navbar = () => {
   const [searchBoxVisibility, setSearchBoxVisibility] = useState(false);
@@ -30,7 +31,7 @@ const Navbar = () => {
 
   return (
     <nav className=" z-10 sticky top-0 flex md:gap-6 items-center w-full px-12 py-5 h-[80px] border-b border-grey bg-white">
-      <img src="/public/blog-logo.png" className="object-cover w-28 md:w-34" />
+      <img src={BlogIcon} className="object-cover w-28 md:w-34" />
       <div
         className={`absolute bg-white left-0 top-full w-full mt-0.5 border-b border-grey
         py-4 px-[5vw] md:border-0 md:block md:relative md:inset-0 md:p-0 md:w-auto lg:ml-80
