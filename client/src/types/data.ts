@@ -7,6 +7,9 @@ export interface IPostProps {
     firstLine: string;
     image: string;
     createdAt: string;
+    author?: {
+      name: string;
+    };
   };
 }
 
