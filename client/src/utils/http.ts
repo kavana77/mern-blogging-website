@@ -3,7 +3,7 @@ export const signUpUser = async (data: {
   email: string;
   password: string;
 }) => {
-  const response = await fetch("http://localhost:5000/api/signup", {
+  const response = await fetch("https://mern-blogging-website-1.onrender.com/api/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export const signInUser = async (data: { email: string; password: string }) => {
 };
 
 export const fetchPublicBlogs = async () => {
-  const response = await fetch("http://localhost:5000/api/blog/public", {
+  const response = await fetch("https://mern-blogging-website-1.onrender.com/api/blog/public", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -46,7 +46,7 @@ export const fetchPublicBlogs = async () => {
 
 export const fetchBlogs = async (page: number, limit: number) => {
   const response = await fetch(
-    `http://localhost:5000/api/bloglist?page=${page}&limit=${limit}`,
+    `https://mern-blogging-website-1.onrender.com/api/bloglist?page=${page}&limit=${limit}`,
     {
       method: "GET",
       headers: {
@@ -63,7 +63,7 @@ export const fetchBlogs = async (page: number, limit: number) => {
 };
 
 export const fetchBlogById = async (id?: string) => {
-  const response = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+  const response = await fetch(`https://mern-blogging-website-1.onrender.com/api/blogs/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -77,7 +77,7 @@ export const fetchBlogById = async (id?: string) => {
 };
 
 export const createPost = async (formData: FormData) => {
-  const response = await fetch("http://localhost:5000/api/upload", {
+  const response = await fetch("https://mern-blogging-website-1.onrender.com/api/upload", {
     method: "POST",
     body: formData,
     credentials: "include",
@@ -92,7 +92,7 @@ export const createPost = async (formData: FormData) => {
 
 export const searchBlogs = async (search: string) => {
   const response = await fetch(
-    `http://localhost:5000/api/searching?q=${encodeURIComponent(search)}`,
+    `https://mern-blogging-website-1.onrender.com/api/searching?q=${encodeURIComponent(search)}`,
     {
       method: "GET",
       headers: {
@@ -107,7 +107,7 @@ export const searchBlogs = async (search: string) => {
 };
 
 export const updateBlog = async (id: string, formData: FormData) => {
-  const response = await fetch(`http://localhost:5000/api/updateblog/${id}`, {
+  const response = await fetch(`https://mern-blogging-website-1.onrender.com/api/updateblog/${id}`, {
     method: "PUT",
     body: formData,
     credentials: "include",
@@ -120,7 +120,7 @@ export const updateBlog = async (id: string, formData: FormData) => {
 };
 
 export const logout = async () => {
-  const response = await fetch("http://localhost:5000/api/logout", {
+  const response = await fetch("https://mern-blogging-website-1.onrender.com/api/logout", {
     method: "POST",
     credentials: "include",
   });
