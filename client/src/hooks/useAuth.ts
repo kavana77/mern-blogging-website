@@ -1,6 +1,8 @@
 const useAuth = () => {
   const token = localStorage.getItem("token") || "";
   const isSignIn = localStorage.getItem("isSignIn") === "true";
+  console.log("isSignIn:", isSignIn);
+console.log("token:", token);
   const signIn = () => {
     localStorage.setItem("isSignIn", "true");
   };
