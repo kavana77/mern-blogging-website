@@ -1,8 +1,8 @@
 const useAuth = () => {
-  const token = localStorage.getItem("token") || "";
+ 
   const isSignIn = localStorage.getItem("isSignIn") === "true";
-  console.log("isSignIn:", isSignIn);
-console.log("token:", token);
+
+
   const signIn = () => {
     localStorage.setItem("isSignIn", "true");
   };
@@ -10,7 +10,7 @@ console.log("token:", token);
     localStorage.setItem("isSignIn", "false");
     window.location.reload();
   };
-  return { isSignIn, signIn, signOut , token};
+  return { isSignIn, signIn, signOut};
 };
 
 export default useAuth;
