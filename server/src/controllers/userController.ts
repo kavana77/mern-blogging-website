@@ -44,8 +44,8 @@ export const SignIn: RequestHandler = async (req, res, next) => {
     const token = jwt.sign({ _id: user._id }, env.ACCESS_TOKEN_SECRET);
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
     });
     return res.status(200).json({
       message: "Signed in successfully",

@@ -45,15 +45,12 @@ export const fetchPublicBlogs = async () => {
 };
 
 export const fetchBlogs = async (page: number, limit: number) => {
-  const token = localStorage.getItem("token") 
-  console.log("fetchBlogs token:", token);
   const response = await fetch(
     `https://mern-blogging-website-1.onrender.com/api/bloglist?page=${page}&limit=${limit}`,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
       },
       credentials: "include",
     }
