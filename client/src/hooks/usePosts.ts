@@ -3,13 +3,13 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import useAuth from "./useAuth";
 
 const usePosts = (limit: number) => {
-  const { isSignIn } = useAuth();
+  const { isSignIn, token } = useAuth();
 
   return useInfiniteQuery({
     queryKey: ["posts", { isSignIn }],
     queryFn: async ({ pageParam = 0 }) => {
       if (isSignIn) {
-        return await fetchBlogs(pageParam, limit);
+        return await fetchBlogs(pageParam, limit, token);
       } else {
         return await fetchPublicBlogs();
       }

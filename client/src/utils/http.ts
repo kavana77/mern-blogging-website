@@ -44,13 +44,14 @@ export const fetchPublicBlogs = async () => {
   return response.json();
 };
 
-export const fetchBlogs = async (page: number, limit: number) => {
+export const fetchBlogs = async (page: number, limit: number, token: string) => {
   const response = await fetch(
     `https://mern-blogging-website-1.onrender.com/api/bloglist?page=${page}&limit=${limit}`,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
       },
       credentials: "include",
     }
