@@ -44,7 +44,8 @@ export const fetchPublicBlogs = async () => {
   return response.json();
 };
 
-export const fetchBlogs = async (page: number, limit: number, token: string) => {
+export const fetchBlogs = async (page: number, limit: number) => {
+  const token = localStorage.getItem("token") 
   const response = await fetch(
     `https://mern-blogging-website-1.onrender.com/api/bloglist?page=${page}&limit=${limit}`,
     {
