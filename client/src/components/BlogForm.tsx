@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { ArrowLeftIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { blogSchema } from "../lib/zodSchema";
+import BlogIcon from "../../public/blog-logo.png"
 
 const BlogForm = () => {
   const categories = blogSchema.shape.category.options;
@@ -63,7 +64,7 @@ const BlogForm = () => {
           <ArrowLeftIcon />
         </Link>
         <img
-          src="/public/blog-logo.png"
+          src={BlogIcon}
           className="object-cover w-28 md:w-34"
         />
       </nav>
